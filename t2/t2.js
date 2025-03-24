@@ -1,5 +1,5 @@
 // array for todo list
-const todoList = [
+const toDoList = [
   {
     id: 1,
     task: 'Learn HTML',
@@ -43,5 +43,5 @@ for (let i = 0; i < toDoList.length; i++) {
   label.innerHTML = toDoList[i].task;
   li.appendChild(label);
 
-  ul.insertAdjacentElement('beforeend', li);
+  ul.appendChild(li);
 }
