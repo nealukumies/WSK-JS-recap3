@@ -1,3 +1,5 @@
+import {distance} from '../lib/euclidean.js';
+
 const restaurants = [
   {
     location: {type: 'Point', coordinates: [25.018456, 60.228982]},
@@ -770,4 +772,40 @@ const restaurants = [
   },
 ];
 
-// your code here
+const options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+function success(pos) {
+  const crd = pos.coords;
+  //geoJSON longitude first!
+  const start = [crd.longitude, crd.latitude];
+  console.log(start);
+  restaurants.sort(
+    (a, b) =>
+      distance(start, a.location.coordinates) -
+      distance(start, b.location.coordinates)
+  );
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+const table = document.querySelector('table');
+
+for (let i = 0; i < restaurants.length; i++) {
+  const tr = document.createElement('tr');
+  const name = document.createElement('td');
+  name.innerHTML = restaurants[i].name;
+  tr.appendChild(name);
+
+  const address = document.createElement('td');
+  address.innerHTML = restaurants[i].address;
+  tr.appendChild(address);
+
+  table.appendChild(tr);
+}
